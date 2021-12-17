@@ -6,7 +6,7 @@ management.
 It contains 3 independent programs:
 ___________________________________________________________________________________________
 ```
-* Reversed One Time Pad
+## Reversed One Time Pad
 ```
   The one-time pad is a long sequence of random letters. These letters are combined with
   the plaintext message to produce the ciphertext. In **ROTP** the key is
@@ -14,7 +14,7 @@ ________________________________________________________________________________
   
 ___________________________________________________________________________________________
 ```   
-* Ages
+## Ages
 ```
   This program uses a structure to calculate how old each person is.
   
@@ -50,7 +50,7 @@ ________________________________________________________________________________
   they are only few months/days old. In this case, age will still be stored, but as 0.
 ___________________________________________________________________________________________
 ```  
-* Columnar Transposition
+## Columnar Transposition
 ```
   This program works more with the memory than the other 2.
   
