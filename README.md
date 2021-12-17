@@ -14,21 +14,37 @@ ________________________________________________________________________________
   
 ___________________________________________________________________________________________
 ```   
-* mkdir
+* Ages
 ```
-  This creates a new directory in the current directory.
-  You can find this function in _create.c_.
-  Before creating a directory, the function check_existance()
-  will check if there already is a file/directory with the same name,
-  in which case the touch() function will print the "Directory already exists" message.
-  After the directory is created, it will be added to the end of the list of directories by
-  changing the **_next_** parameter of the previous directory.
+  This program uses a structure to calculate how old each person is.
   
-  * Extra function : make_file()
+  * In _edx_ is stored the number of people
+  * In _esi_ is stored the present day (day month year)
+  * In _edi_ are stored the birthdays.
   
-    You can find it in _init.c_.
-    In order to make a new directory, the program will allocate memory for it
-    and then it will initialize its parameters.
+  The program starts by substracting *birth year* from the *present year*.
+  
+  If the birth year is greater, 0 is returned and the program stops.
+  Else, if the birth year is lower, it will test for **month**.
+  
+  Here there are 3 possibilities:
+  
+  * The birth month is lower than the present month 
+      * ==> age = _present year_ - _birth year_
+  
+  * The birth month is greater than the present month 
+      * ==> age = (_present year_ - _birth year_) - 1
+   
+  * The birth month and the present month are equal
+      * ==> another test is necessarily and the program will jump to **day**
+
+  For day there are only 2 possibilities:
+  
+  * If the birth day is greater, this means there are only a few days untill
+    the birthday, so age = (_present year_ - _birth year_) - 1
+    
+  * If the birth day is less or equal than the present day,
+    age = _present year_ - _birth year_
 ___________________________________________________________________________________________
 ```  
 * ls
