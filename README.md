@@ -1,7 +1,7 @@
 # Cryptography and assembly
 ### Copyright 2021 Adina-Maria Amzarescu 321CA
-This is a project that helped me understand more about Assembly and low-level memory
-management.
+This is a project that focuses on the understanding of Assembly, low-level memory
+management as well as basic cryptography ideas.
 
 It contains 3 independent programs:
 ___________________________________________________________________________________________
