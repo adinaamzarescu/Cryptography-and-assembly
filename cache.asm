@@ -9,7 +9,7 @@ section .text
     extern printf
     
 load:
-    ;; DO NOT MODIFY
+    ;; DO NOT MODIF
     push ebp
     mov ebp, esp
     pusha
