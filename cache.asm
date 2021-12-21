@@ -9,7 +9,6 @@ section .text
     extern printf
     
 load:
-    ;; DO 
     push ebp
     mov ebp, esp
     pusha
