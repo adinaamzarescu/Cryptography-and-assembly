@@ -9,9 +9,9 @@ columnar_transposition:
     mov     ebp, esp
     pusha 
 
-    mov     edi, [ebp + 8]   ;  key
-    mov     esi, [ebp + 12]  ;  haystack
-    mov     ebx, [ebp + 16]  ;  ciphertext
+    mov     edi, [ebp + 8]   ;;  key
+    mov     esi, [ebp + 12]  ;;  haystack
+    mov     ebx, [ebp + 16]  ;;  ciphertext
 
     ;; First of all I free the registers
     xor     ecx, ecx
