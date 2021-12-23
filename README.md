@@ -3,7 +3,7 @@
 This is a project that focuses on the understanding of Assembly, low-level memory
 management as well as basic cryptography ideas.
 
-It contains 3 independent programs:
+It contains 4 independent programs:
 ___________________________________________________________________________________________
 ```
 Reversed One Time Pad
