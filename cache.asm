@@ -27,7 +27,7 @@ load:
     shr eax, OFFSET_BITS
     mov dword [tag], eax; Salvam intr-o variabila valoarea tag-ului
 
-    ;Calculam offset-ul
+    ;; OFFSET
     xor ebx, ebx
     mov ebx, 7; Pentru a avea 111 pe ultimele pozitii si a putea extrage cei mai
     ;nesemnificativi 3 biti din valoarea adresei
