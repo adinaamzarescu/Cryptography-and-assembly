@@ -29,7 +29,6 @@ load:
     xor ebx, ebx
     ;; For having 111 at the end
     mov ebx, 7
-    ;nesemnificativi 3 biti din valoarea adresei
     mov eax, dword [ebp + 20]; Mutam in eax adresa de unde trebuie sa extragem octetul
     and eax, ebx; Facem si intre masca(ebx) si adresa pentru a extrage cei mai 
     ;nesemnificativi 3 biti din aceasta
