@@ -19,9 +19,7 @@ load:
     mov edx, [ebp + 20] ; address
     mov edi, [ebp + 24] ; to_replace (index of the cache line that needs to be replaced in case of a cache MISS)
     
-    ; Calculam tag-ul pentru adresa de la care vrem sa obtinem date
-    ; Acesta il vom obtine printr-o simpla shiftare la dreapta cu 3
-    ;pozitii a valorii adresei de unde trebuie sa extragem octetul.
+    ;; Calculating the tag by shifting with 3 the adress
     xor eax, eax
     mov eax, dword [ebp + 20]
     shr eax, OFFSET_BITS
@@ -29,6 +27,7 @@ load:
 
     ;; OFFSET
     xor ebx, ebx
+    ;; For
     mov ebx, 7; Pentru a avea 111 pe ultimele pozitii si a putea extrage cei mai
     ;nesemnificativi 3 biti din valoarea adresei
     mov eax, dword [ebp + 20]; Mutam in eax adresa de unde trebuie sa extragem octetul
