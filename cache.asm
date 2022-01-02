@@ -112,8 +112,7 @@ move_from_memory:
     add eax, edx; Adunam la eax edx
     mov [eax], edi; Punem in valoarea de la adresa eax tag-ul calculat de noi
 
-    ; Acum avem datele incarcate in cache si tag-ul in vectorul tags
-    ; Mai trebuie sa accesam elementul cache[to_replace][offset]
+    ; Accesing the cache[to_replace][offset] element
     mov eax, [ebp + 24]; to_replace
     mov edx, CACHE_LINE_SIZE; In edx avem cache_line_size
     mul dl; In eax vom avea to_replace * cache_line_size
