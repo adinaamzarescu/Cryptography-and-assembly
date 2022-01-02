@@ -25,7 +25,7 @@ load:
     xor eax, eax
     mov eax, dword [ebp + 20]
     shr eax, OFFSET_BITS
-    mov dword [tag], eax; Salvam intr-o variabila valoarea tag-ului
+    mov dword [tag], eax
 
     ;; OFFSET
     xor ebx, ebx
