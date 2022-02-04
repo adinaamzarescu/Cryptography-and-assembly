@@ -13,11 +13,11 @@ load:
     mov ebp, esp
     pusha
 
-    mov eax, [ebp + 8]  ; address of reg
-    mov ebx, [ebp + 12] ; tags
-    mov ecx, [ebp + 16] ; cache
-    mov edx, [ebp + 20] ; address
-    mov edi, [ebp + 24] ; to_replace (index of the cache line that needs to be replaced in case of a cache MISS)
+    mov eax, [ebp + 8]  ;; Address of reg
+    mov ebx, [ebp + 12] ;; Tags
+    mov ecx, [ebp + 16] ;; Cache
+    mov edx, [ebp + 20] ;; Address
+    mov edi, [ebp + 24] ;; to_replace (index of the cache line that needs to be replaced in case of a cache MISS)
     
     ;; Calculating the tag by shifting with 3 the adress
     xor eax, eax
@@ -29,97 +29,104 @@ load:
     xor ebx, ebx
     ;; For having 111 at the end
     mov ebx, 7
-    mov eax, dword [ebp + 20]; Mutam in eax adresa de unde trebuie sa extragem octetul
-    and eax, ebx; Facem si intre masca(ebx) si adresa pentru a extrage cei mai 
-    ;nesemnificativi 3 biti din aceasta
-    mov byte [offset], al; Salvam intr-o variabila valoarea offset-ului
+    mov eax, dword [ebp + 20]
+    ;; The 3 least significant bits
+    and eax, ebx
+    ;; Saving the offset
+    mov byte [offset], al
 
-    ;Cautam tag-ul calculat in vectorul tags
-    xor ecx, ecx; Folosim ecx pe post de i(increment)
-    mov eax, dword [ebp + 12]; Punem in registrul eax adresa de plecare pentru vectorul tags.
-    mov ebx, dword [tag]; Punem in registrul ebx tag-ul calculat mai devreme.
+    ;; Searching the tag
+    xor ecx, ecx
+    mov eax, dword [ebp + 12]
+    mov ebx, dword [tag]
     
 search_tag:
-    mov eax, ecx; Punem in eax valoarea contorului curent
-    mov edx, 4; Punem in edx dimensiunea unui element din vectorul de tags
-    mul dl; Avem in eax valoarea 4*index
-    mov edx, dword [ebp + 12]; Punem in edx adresa de plecare pentru vectorul tags(baza)
-    add eax, edx; Adunam la 4 * index valoarea de plecare pentru tags pentru a obtine elementul
-    ; de pe pozitia index
-    cmp ebx, [eax]; Comparam valoarea tag-ului calculat de noi cu valoarea de la adresa calculata
-    ; in eax
-    je cache_hit; Daca cele doua valori sunt egale in seamna ca tag-ul calculat se afla deja in
-    ; vectorul de tags ceea ce inseamna ca datele au mai fost o data incarcate in cache deci va
-    ; trebui sa efectuam un cache_hit(doar sa extragem octetul din cache)
-    inc ecx; Incrementam contorul
-    cmp ecx, CACHE_LINES; Comparam contorul cu numarul de elemente ale vectorului tags, care coincide
-    ; cu numarul de linii ale matricei cache
-    jb search_tag; Ne intoarcem din nou la search_tag pentru a verifica urmatorul element din tags
-    jmp cache_miss; Daca am ajuns aici inseamna ca nu am gasit tag-ul in vectorul tags ceea ce 
-    ; inseamna ca avem de efectuat un cache_miss
+    ;; The current index
+    mov eax, ecx
+    ;; The size of an element
+    mov edx, 4
+    mul dl
+    mov edx, dword [ebp + 12]
+    ;; Getting the element
+    add eax, edx
+    ;; Comparing the 2 tags
+    cmp ebx, [eax]
+    ;; If they are equal, the tag is already stored in cache
+    je cache_hit
+    inc ecx
+    cmp ecx, CACHE_LINES
+    jb search_tag
+    ;; The tag was not found
+    jmp cache_miss
    
 cache_hit:
-    ;Inseamna ca am gasit index-ul la care am gasit tag-ul in vectorul tags
-    ;Numarul liniei se afla in ecx
-    ;Va trebui sa luam din memorie offset-ul calculat la inceput
-    ;si trebuie sa punem in addr_reg = cache[i][offset], unde i = ecx
-    mov ebx, dword [offset]; Punem in ebx valoarea offset-ului calculat
-    mov eax, ecx; Punem in eax index-ul din vectorul de tags la care am gasit tag-ul nostru
-    mov edx, CACHE_LINE_SIZE; Punem in edx numarul de elemente de pe o linie a matricei cache
-    mul dl; In eax avem index_linie*dimensiune_linie
-    mov edx, dword [ebp + 16]; Punem in edx adresa de plecare pentru matricea cache
-    add eax, edx; Adunam adresa de plecare pentru matricea cache cu index_linie * dimensiune_linie
-    ; pentru a obtine adresa liniei cu index-ul: index_linie din matricea cache
-    mov edx, eax; mutam aceasta adresa in edx
+    ;; The tag was found
+    mov ebx, dword [offset]
+    ;; eax will store the index of the tag
+    mov eax, ecx
+    mov edx, CACHE_LINE_SIZE
+    mul dl
+    mov edx, dword [ebp + 16]
+    add eax, edx
+    mov edx, eax
 
-    xor eax, eax; Resetam eax-ul
-    mov al, byte [edx + ebx]; Punem in al byte-ul de pe coloana ebx(offset) de pe linia edx
-    mov byte [ebp + 8], al; Punem in registru valoarea extrasa din cache
-    jmp stop; Sarim direct la stop pentru ca nu mai avem nevoie sa incarcam date in cache din memorie
+    xor eax, eax
+    ;; al will store the byte of the offset's column (edx line)
+    mov al, byte [edx + ebx]
+    ;; The extracted value from cache
+    mov byte [ebp + 8], al
+    ;; There is no need to keep going
+    jmp stop
 
 cache_miss:
-    mov edi, dword [tag]; Tag-ul
-    shl edi, 3; Adresa de plecare(de aici vom incepe sa aducem octeti din memorie in cache)
-    mov esi, [ebp + 24]; to_replace
-    mov eax, esi; In avem to_replace
+    mov edi, dword [tag]
+    shl edi, 3
+    mov esi, [ebp + 24]
+    mov eax, esi
     mov edx, CACHE_LINE_SIZE; In edx avem cache_line_size
-    mul dl; In eax vom avea to_replace * cache_line_size
-    mov ebx, dword [ebp + 16]; In ebx vom avea adresa de plecare pentru cache
-    add eax, ebx; In eax vom avea adresa liniei cu index-ul to_replace din cache
-    mov edx, eax; Mutam in edx
+    ;; eax will store to_replace * cache_line_size
+    mul dl
+    mov ebx, dword [ebp + 16]
+    ;; eax will store the adress of the to_replace index
+    add eax, ebx
+    mov edx, eax
 
-    ; In loop-ul urmator vom extrage octetii din memorie pornind de la adresa
-    ;de plecare definita anterior in edi si ii vom pune pe linia corespunzatoare
-    ;in matricea cache
     xor ecx, ecx  
 move_from_memory:
+    ;; Extracting the octets from memory starting with edi
+    ;; and then they will be stored in the cache matrix
     xor ebx, ebx
-    mov bl, byte [edi + ecx]; Extragem octetul cu index-ul ecx(avand ca baza adresa de plecare)
-    mov byte [edx + ecx], bl; Luam octetul extras din memorie in bl si il inseram pe linia din cache
-    inc ecx; Incrementam contorul
-    cmp ecx, CACHE_LINE_SIZE; Avem de luat 8 octeti din memorie(dimensiunea unei linii din cache)
+    ;; Extracting the ecx index octet
+    mov bl, byte [edi + ecx]
+    ;; Moving it to cache
+    mov byte [edx + ecx], bl
+    inc ecx
+    cmp ecx, CACHE_LINE_SIZE
     jb move_from_memory
 
-    ;Punem tag-ul pe pozitia to_replace in vectorul de tags
-    ;Trebuie sa accesam tags[to_replace]
+    ;; Moving the tag on the to_replace position
     mov edi, dword [tag]
-    mov eax, [ebp + 24]; to_replace in eax
-    mov edx, 4; Punem in edx 4
-    mul dl; In eax vom avea to_replace * 4
-    mov edx, dword [ebp + 12]; Punem in edx adresa de plecare pentru tags
-    add eax, edx; Adunam la eax edx
-    mov [eax], edi; Punem in valoarea de la adresa eax tag-ul calculat de noi
+    mov eax, [ebp + 24]
+    mov edx, 4
+    mul dl
+    mov edx, dword [ebp + 12]
+    add eax, edx
+    mov [eax], edi
 
     ; Accesing the cache[to_replace][offset] element
-    mov eax, [ebp + 24]; to_replace
-    mov edx, CACHE_LINE_SIZE; In edx avem cache_line_size
-    mul dl; In eax vom avea to_replace * cache_line_size
-    mov ebx, dword [ebp + 16]; In ebx vom avea adresa de plecare pentru cache
-    add eax, ebx; In eax vom avea adresa liniei cu index-ul to_replace din cache
-    mov cl, byte [offset]; Mutam in cl valoarea offset-ului
-    mov bl, byte [eax + ecx]; Mutam in bl valoarea octetului cu coordonatele [to_replace][offset]
-    mov eax, [ebp + 8]; Punem in eax registrul unde trebuie sa inseram octetul.
-    mov byte [eax], bl; Punem in registru octetul extras din cache
+    mov eax, [ebp + 24]
+    mov edx, CACHE_LINE_SIZE
+    ;; eax will store to_replace * cache_line_size
+    mul dl
+    ;; The starting adress from cache
+    mov ebx, dword [ebp + 16]
+    ;; eax will store the adress of the to_replace line
+    add eax, ebx
+    mov cl, byte [offset]
+    ;; bl will store the [to_replace][offset] octet
+    mov bl, byte [eax + ecx]
+    mov eax, [ebp + 8]
+    mov byte [eax], bl
     
     popa
     leave
