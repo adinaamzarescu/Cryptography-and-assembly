@@ -6,9 +6,9 @@ management as well as basic cryptography ideas.
 It contains 4 independent programs:
 ___________________________________________________________________________________________
 
-```
+`
 ### Reversed One Time Pad
-```
+`
 
   The one-time pad is a long sequence of random letters. These letters are combined with
   the plaintext message to produce the ciphertext. In **ROTP** the key is
