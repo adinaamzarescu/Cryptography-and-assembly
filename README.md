@@ -98,6 +98,7 @@ ________________________________________________________________________________
 **Loading**
 
 This algorithm works with reg, tags, cache, teh adress and to_replace.
+
 The *adress* is the octet that has to be moved in reg, *to_replace* is
 the index of the line of the cache matrix.
 
