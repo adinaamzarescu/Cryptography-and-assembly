@@ -86,5 +86,28 @@ Cache Load Simulation
   will be searched for, it will be faster. 
   
   The structure of the cache of this program:
+  
   * A matrix with 100 lines, each having 8 octets
-  * char cache [CACHE_LINES][CACHE_LINE_SIZE]
+  * char cache [ CACHE_LINES ][ CACHE_LINE_SIZE ]
+  * Each line of this matrix has a tag
+      * If that line is empty, teh tag is 0
+      * The value of the tag = the first 29 bits.
+        This happens because the last 3 bits are 0
+      * The tag is used to search for data
+
+**Loading**
+
+This algorithm works with reg, tags, cache, teh adress and to_replace.
+The *adress* is the octet that has to be moved in reg, *to_replace* is
+the index of the line of the cache matrix.
+
+Steps:
+
+* Calculating the tag
+* Iterating through the tags of each line. If the line is found,
+  the program then calculates the offset. Then that octet will be
+  moved to cache
+* If the tag was not found, 8 octets must be moved to cache, one
+  of them being the one it was seached for. This line has the index to_replace
+  
+___________________________________________________________________________________________
