@@ -70,3 +70,21 @@ Columnar Transposition
   The **move_to_next** label is used to increment the rows and test if the program will
   end.
 ___________________________________________________________________________________________
+
+```  
+Cache Load Simulation
+```
+  Basic simulation of how the cache memory works.
+  
+  When the processor needs a certain RAM adress, it searches in cache first. If the
+  adress is there, it will gp to CACHE_HIT which means it can acces it from there
+  without interacting with the main memory. This is much faster. 
+  If the adress is not already in the cache, this means CACHE_MISS. Now the data
+  must me moved from RAM to cache and then transferred to the registers. 
+  
+  Even if in the case of CACHE_MISS there is a delay, the next time the data 
+  will be searched for, it will be faster. 
+  
+  The structure of the cache of this program:
+  * A matrix with 100 lines, each having 8 octets
+  * char cache [CACHE_LINES][CACHE_LINE_SIZE]
