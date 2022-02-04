@@ -6,16 +6,16 @@ management as well as basic cryptography ideas.
 It contains 4 independent programs:
 ___________________________________________________________________________________________
 
-` ### Reversed One Time Pad`
+### Reversed One Time Pad
 
   The one-time pad is a long sequence of random letters. These letters are combined with
   the plaintext message to produce the ciphertext. In **ROTP** the key is
   reversed.
   
 ___________________________________________________________________________________________
-```   
+ 
 ### Ages
-```
+
   This program uses a structure to calculate how old each person is.
   
   * In _edx_ is stored the number of people
@@ -49,9 +49,9 @@ ________________________________________________________________________________
   There is also a special case, in which a person has already been born, but
   they are only few months/days old. In this case, age will still be stored, but as 0.
 ___________________________________________________________________________________________
-```  
+
 ### Columnar Transposition
-```
+
   This program works more with the memory than the other 2.
   
   In a columnar transposition cipher, the message is written in a grid of equal length
@@ -71,10 +71,10 @@ ________________________________________________________________________________
   end.
 ___________________________________________________________________________________________
 
-```  
+
 ### Cache Load Simulation
-```
-  Basic simulation of how the cache memory works.
+
+ Basic simulation of how the cache memory works.
   
   When the processor needs a certain RAM adress, it searches in cache first. If the
   adress is there, it will gp to CACHE_HIT which means it can acces it from there
