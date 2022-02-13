@@ -83,7 +83,7 @@ cache_miss:
     shl edi, 3
     mov esi, [ebp + 24]
     mov eax, esi
-    mov edx, CACHE_LINE_SIZE; In edx avem cache_line_size
+    mov edx, CACHE_LINE_SIZE
     ;; eax will store to_replace * cache_line_size
     mul dl
     mov ebx, dword [ebp + 16]
